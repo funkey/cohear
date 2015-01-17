@@ -1,7 +1,7 @@
 #ifndef SR_DETAIL_SLOT_BASE_H__
 #define SR_DETAIL_SLOT_BASE_H__
 
-namespace sr {
+namespace chr {
 
 // forward declaration
 class Receiver;
@@ -24,7 +24,7 @@ public:
 };
 
 } // namespace detail
-} // namespace sr
+} // namespace chr
 
 #endif // SR_DETAIL_SLOT_BASE_H__
 

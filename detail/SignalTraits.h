@@ -3,7 +3,7 @@
 
 #include <sr/meta/has_parent_type.h>
 
-namespace sr {
+namespace chr {
 namespace detail {
 
 // symbol to indicate no parent
@@ -55,7 +55,7 @@ struct SignalTraits {
 	typedef typename parent_of<SignalType>::value parent_type;
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_DETAILS_SIGNAL_TRAITS_H__
 

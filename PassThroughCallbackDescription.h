@@ -4,7 +4,7 @@
 #include "CallbackDescription.h"
 #include "PassThroughSlot.h"
 
-namespace sr {
+namespace chr {
 
 template <typename SignalType>
 class PassThroughCallbackDescription : public CallbackDescription {
@@ -36,7 +36,7 @@ private:
 	PassThroughSlot* _slot;
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
 

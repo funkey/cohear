@@ -5,7 +5,7 @@
 #include "SignalCallbackDescription.h"
 #include "PassThroughCallbackDescription.h"
 
-namespace sr {
+namespace chr {
 
 // forward declaration
 class PassThroughSlot;
@@ -58,7 +58,7 @@ private:
 	std::vector<CallbackDescription*> _cds;
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_RECEIVER_H__
 

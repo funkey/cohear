@@ -4,7 +4,7 @@
 #include <typeinfo>
 #include <typeindex>
 
-namespace sr {
+namespace chr {
 
 namespace detail {
 
@@ -73,7 +73,7 @@ private:
 	void* _obj;
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_CALLBACK_DESCRIPTION_H__
 

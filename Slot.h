@@ -5,7 +5,7 @@
 #include "detail/SlotBase.h"
 #include "ExactMatchDelegateStrategy.h"
 
-namespace sr {
+namespace chr {
 
 template <
 		typename SignalType,
@@ -98,7 +98,7 @@ private:
 	std::vector<DescribedDelegate> _delegates;
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_SLOT_H__
 

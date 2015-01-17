@@ -14,7 +14,7 @@
 #define SRUTIL_DELEGATE_DO_JOIN( X, Y ) SRUTIL_DELEGATE_DO_JOIN2(X,Y)
 #define SRUTIL_DELEGATE_DO_JOIN2( X, Y ) X##Y
 
-namespace srutil
+namespace chrutil
 {
 #ifdef SRUTIL_DELEGATE_PREFERRED_SYNTAX
 #define SRUTIL_DELEGATE_CLASS_NAME delegate

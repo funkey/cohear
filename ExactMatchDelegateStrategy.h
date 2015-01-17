@@ -4,7 +4,7 @@
 #include "Delegate.h"
 #include "CallbackDescription.h"
 
-namespace sr {
+namespace chr {
 
 /**
  * A get-delegate-strategy, that creates a delegate from a callback description 
@@ -32,7 +32,7 @@ public:
 	}
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_EXACT_MATCH_DELEGATE_STRATEGY_H__
 

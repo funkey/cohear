@@ -3,7 +3,7 @@
 
 #include "delegate/delegate.hpp"
 
-namespace sr {
+namespace chr {
 
 /**
  * Our delegate is a simple function taking only a reference to the signal that 
@@ -12,7 +12,7 @@ namespace sr {
 template <typename SignalType>
 using Delegate = srutil::delegate<void(SignalType&)>;
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_DELEGATE_H__
 

@@ -5,7 +5,7 @@
 #include "detail/SlotBase.h"
 #include "Receiver.h"
 
-namespace sr {
+namespace chr {
 
 class Sender {
 
@@ -46,7 +46,7 @@ private:
 	std::vector<detail::SlotBase*> _slots;
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_SENDER_H__
 

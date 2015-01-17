@@ -9,7 +9,7 @@
 // we always want the preferred syntax
 #define SRUTIL_DELEGATE_PREFERRED_SYNTAX
 
-namespace srutil
+namespace chrutil
 {
 #ifdef SRUTIL_DELEGATE_PREFERRED_SYNTAX
 	template <typename TSignature> class delegate;

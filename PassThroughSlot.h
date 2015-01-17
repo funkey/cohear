@@ -3,7 +3,7 @@
 
 #include "detail/SlotBase.h"
 
-namespace sr {
+namespace chr {
 
 class PassThroughSlot : public detail::SlotBase {
 
@@ -76,7 +76,7 @@ private:
 	std::vector<Receiver*> _receivers;
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_PASS_THROUGH_SLOT_H__
 

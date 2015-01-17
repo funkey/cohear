@@ -4,7 +4,7 @@
 #include "Delegate.h"
 #include "CallbackDescription.h"
 
-namespace sr {
+namespace chr {
 
 template <typename SignalType>
 class SignalCallbackDescription : public CallbackDescription {
@@ -39,7 +39,7 @@ private:
 	Delegate<SignalType> _delegate;
 };
 
-} // namespace sr
+} // namespace chr
 
 #endif // SR_SIGNAL_CALLBACK_DESCRIPTION_H__
 
