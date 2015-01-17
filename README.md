@@ -43,6 +43,8 @@ interface:
 
 ### Creating a `Receiver`
 
+    Handler handler;
+
     chr::Receiver receiver;
     receiver.registerCallback<A, Handler, &Handler::onA>(&handler);
     receiver.registerCallback<B, Handler, &Handler::onB>(&handler);
@@ -53,5 +55,5 @@ interface:
 
 ### Sending signals
 
-    a();  // default constructed signal A
-    b(5); // constructs B(5)
+    a();  // calls handler.onA() with default constructed signal A()
+    b(5); // calls handler.onB() with signal B(5)
