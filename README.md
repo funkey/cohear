@@ -20,9 +20,29 @@ call and even outperforms virtual function calls.
 Usage Example
 -------------
 
-The following example assumes user provided signals `A` and `B` (with 
-constructors `A()` and`B(int)`), and a handler implementation with the following 
-interface:
+### Creating Signals
+
+Signals are just user-provided classes with inheritance cues:
+
+    class A {};
+
+    class A1 : public A {
+    public:
+      typedef A parent_type; // inheritance cue
+    };
+
+    class B() {
+    public:
+      B(int n) : _n(n) {}
+      /*...*/
+    private:
+      int _n;
+    };
+
+### Callback Interface
+
+Any method with the signature `void(Signal&)` can be used as a callback for type 
+`Signal`:
 
     class Handler {
 
@@ -34,14 +54,20 @@ interface:
 
 ### Creating a `Sender`
 
-    chr::Slot<A> a;
-    chr::Slot<B> b;
+A sender is just a collection of signal `Slot`s:
+
+    chr::Slot<A>  a;
+    chr::Slot<A1> a1;
+    chr::Slot<B>  b;
 
     chr::Sender sender;
     sender.registerSlot(a);
+    sender.registerSlot(a1);
     sender.registerSlot(b);
 
 ### Creating a `Receiver`
+
+Analogously, a receiver is a collection of callbacks:
 
     Handler handler;
 
@@ -53,7 +79,10 @@ interface:
 
     sender.connect(receiver);
 
-### Sending signals
+### Sending Signals
 
-    a();  // calls handler.onA() with default constructed signal A()
+Signals are sent by invoking the `operator()` on the respective `Slot`s:
+
+    a();  // calls handler.onA() with signal A()
+    a1(); // calls handler.onA() with signal A1()
     b(5); // calls handler.onB() with signal B(5)
