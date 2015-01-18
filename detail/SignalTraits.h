@@ -1,7 +1,7 @@
 #ifndef COHEAR_DETAILS_SIGNAL_TRAITS_H__
 #define COHEAR_DETAILS_SIGNAL_TRAITS_H__
 
-#include <chr/meta/has_parent_type.h>
+#include <cohear/meta/has_parent_type.h>
 
 namespace chr {
 namespace detail {
