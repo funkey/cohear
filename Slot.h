@@ -1,5 +1,5 @@
-#ifndef SR_SLOT_H__
-#define SR_SLOT_H__
+#ifndef COHEAR_SLOT_H__
+#define COHEAR_SLOT_H__
 
 #include <map>
 #include "detail/SlotBase.h"
@@ -100,5 +100,5 @@ private:
 
 } // namespace chr
 
-#endif // SR_SLOT_H__
+#endif // COHEAR_SLOT_H__
 

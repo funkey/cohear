@@ -1,5 +1,5 @@
-#ifndef SR_DETAIL_SLOT_BASE_H__
-#define SR_DETAIL_SLOT_BASE_H__
+#ifndef COHEAR_DETAIL_SLOT_BASE_H__
+#define COHEAR_DETAIL_SLOT_BASE_H__
 
 namespace chr {
 
@@ -26,5 +26,5 @@ public:
 } // namespace detail
 } // namespace chr
 
-#endif // SR_DETAIL_SLOT_BASE_H__
+#endif // COHEAR_DETAIL_SLOT_BASE_H__
 

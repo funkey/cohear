@@ -1,5 +1,5 @@
-#ifndef SR_SENDER_H__
-#define SR_SENDER_H__
+#ifndef COHEAR_SENDER_H__
+#define COHEAR_SENDER_H__
 
 #include <vector>
 #include "detail/SlotBase.h"
@@ -48,5 +48,5 @@ private:
 
 } // namespace chr
 
-#endif // SR_SENDER_H__
+#endif // COHEAR_SENDER_H__
 

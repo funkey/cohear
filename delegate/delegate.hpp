@@ -3,28 +3,29 @@
 
 	Fast delegate compatible with C++ Standard.
 */
-#ifndef SRUTIL_DELEGATE_INCLUDED
-#define SRUTIL_DELEGATE_INCLUDED
+#ifndef COHEAR_DELEGATE_INCLUDED
+#define COHEAR_DELEGATE_INCLUDED
 
 // we always want the preferred syntax
-#define SRUTIL_DELEGATE_PREFERRED_SYNTAX
+#define COHEAR_DELEGATE_PREFERRED_SYNTAX
 
-namespace chrutil
-{
-#ifdef SRUTIL_DELEGATE_PREFERRED_SYNTAX
+namespace chr {
+namespace detail {
+#ifdef COHEAR_DELEGATE_PREFERRED_SYNTAX
 	template <typename TSignature> class delegate;
 	template <typename TSignature> class delegate_invoker;
 #endif
-}
+} // namespace detail
+} // namespace chr
 
 #ifdef _MSC_VER
-#define SRUTIL_DELEGATE_CALLTYPE __fastcall
+#define COHEAR_DELEGATE_CALLTYPE __fastcall
 #else
-#define SRUTIL_DELEGATE_CALLTYPE
+#define COHEAR_DELEGATE_CALLTYPE
 #endif
 
 #include "detail/delegate_list.hpp"
 
-#undef SRUTIL_DELEGATE_CALLTYPE
+#undef COHEAR_DELEGATE_CALLTYPE
 
-#endif//SRUTIL_DELEGATE_INCLUDED
+#endif//COHEAR_DELEGATE_INCLUDED

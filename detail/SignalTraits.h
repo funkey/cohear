@@ -1,7 +1,7 @@
-#ifndef SR_DETAILS_SIGNAL_TRAITS_H__
-#define SR_DETAILS_SIGNAL_TRAITS_H__
+#ifndef COHEAR_DETAILS_SIGNAL_TRAITS_H__
+#define COHEAR_DETAILS_SIGNAL_TRAITS_H__
 
-#include <sr/meta/has_parent_type.h>
+#include <chr/meta/has_parent_type.h>
 
 namespace chr {
 namespace detail {
@@ -57,5 +57,5 @@ struct SignalTraits {
 
 } // namespace chr
 
-#endif // SR_DETAILS_SIGNAL_TRAITS_H__
+#endif // COHEAR_DETAILS_SIGNAL_TRAITS_H__
 

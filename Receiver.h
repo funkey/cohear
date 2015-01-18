@@ -1,5 +1,5 @@
-#ifndef SR_RECEIVER_H__
-#define SR_RECEIVER_H__
+#ifndef COHEAR_RECEIVER_H__
+#define COHEAR_RECEIVER_H__
 
 #include "CallbackDescription.h"
 #include "SignalCallbackDescription.h"
@@ -29,13 +29,13 @@ public:
 	template <typename SignalType, class T, void (T::*Method)(SignalType&)>
 	void registerCallback(T* obj) {
 
-		registerCallback(sr::SignalCallbackDescription<SignalType>::template Create<T, Method>(obj));
+		registerCallback(chr::SignalCallbackDescription<SignalType>::template Create<T, Method>(obj));
 	}
 
 	template <typename SignalType>
 	void registerPassThroughCallback(PassThroughSlot* targetSlot) {
 
-		registerCallback(new sr::PassThroughCallbackDescription<SignalType>(targetSlot));
+		registerCallback(new chr::PassThroughCallbackDescription<SignalType>(targetSlot));
 	}
 
 	/**
@@ -60,5 +60,5 @@ private:
 
 } // namespace chr
 
-#endif // SR_RECEIVER_H__
+#endif // COHEAR_RECEIVER_H__
 

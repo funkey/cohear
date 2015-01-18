@@ -1,5 +1,5 @@
-#ifndef SR_DELEGATE_H__
-#define SR_DELEGATE_H__
+#ifndef COHEAR_DELEGATE_H__
+#define COHEAR_DELEGATE_H__
 
 #include "delegate/delegate.hpp"
 
@@ -10,9 +10,9 @@ namespace chr {
  * is sent.
  */
 template <typename SignalType>
-using Delegate = srutil::delegate<void(SignalType&)>;
+using Delegate = detail::delegate<void(SignalType&)>;
 
 } // namespace chr
 
-#endif // SR_DELEGATE_H__
+#endif // COHEAR_DELEGATE_H__
 

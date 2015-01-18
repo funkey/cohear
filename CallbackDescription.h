@@ -1,5 +1,5 @@
-#ifndef SR_CALLBACK_DESCRIPTION_H__
-#define SR_CALLBACK_DESCRIPTION_H__
+#ifndef COHEAR_CALLBACK_DESCRIPTION_H__
+#define COHEAR_CALLBACK_DESCRIPTION_H__
 
 #include <typeinfo>
 #include <typeindex>
@@ -75,5 +75,5 @@ private:
 
 } // namespace chr
 
-#endif // SR_CALLBACK_DESCRIPTION_H__
+#endif // COHEAR_CALLBACK_DESCRIPTION_H__
 

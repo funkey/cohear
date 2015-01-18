@@ -1,5 +1,5 @@
-#ifndef SR_PASS_THROUGH_SLOT_H__
-#define SR_PASS_THROUGH_SLOT_H__
+#ifndef COHEAR_PASS_THROUGH_SLOT_H__
+#define COHEAR_PASS_THROUGH_SLOT_H__
 
 #include "detail/SlotBase.h"
 
@@ -78,5 +78,5 @@ private:
 
 } // namespace chr
 
-#endif // SR_PASS_THROUGH_SLOT_H__
+#endif // COHEAR_PASS_THROUGH_SLOT_H__
 

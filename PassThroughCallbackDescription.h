@@ -1,5 +1,5 @@
-#ifndef SR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
-#define SR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
+#ifndef COHEAR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
+#define COHEAR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
 
 #include "CallbackDescription.h"
 #include "PassThroughSlot.h"
@@ -38,5 +38,5 @@ private:
 
 } // namespace chr
 
-#endif // SR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
+#endif // COHEAR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
 

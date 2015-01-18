@@ -1,5 +1,5 @@
-#ifndef SR_SIGNAL_CALLBACK_DESCRIPTION_H__
-#define SR_SIGNAL_CALLBACK_DESCRIPTION_H__
+#ifndef COHEAR_SIGNAL_CALLBACK_DESCRIPTION_H__
+#define COHEAR_SIGNAL_CALLBACK_DESCRIPTION_H__
 
 #include "Delegate.h"
 #include "CallbackDescription.h"
@@ -41,5 +41,5 @@ private:
 
 } // namespace chr
 
-#endif // SR_SIGNAL_CALLBACK_DESCRIPTION_H__
+#endif // COHEAR_SIGNAL_CALLBACK_DESCRIPTION_H__
 

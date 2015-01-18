@@ -1,5 +1,5 @@
-#ifndef SR_EXACT_MATCH_DELEGATE_STRATEGY_H__
-#define SR_EXACT_MATCH_DELEGATE_STRATEGY_H__
+#ifndef COHEAR_EXACT_MATCH_DELEGATE_STRATEGY_H__
+#define COHEAR_EXACT_MATCH_DELEGATE_STRATEGY_H__
 
 #include "Delegate.h"
 #include "CallbackDescription.h"
@@ -34,5 +34,5 @@ public:
 
 } // namespace chr
 
-#endif // SR_EXACT_MATCH_DELEGATE_STRATEGY_H__
+#endif // COHEAR_EXACT_MATCH_DELEGATE_STRATEGY_H__
 
