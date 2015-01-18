@@ -24,56 +24,64 @@ Usage Example
 
 Signals are just user-provided classes with inheritance cues:
 
-    class A {};
+```c++
+class A {};
 
-    class A1 : public A {
-    public:
-      typedef A parent_type; // inheritance cue
-    };
+class A1 : public A {
+public:
+  typedef A parent_type; // inheritance cue
+};
 
-    class B() {
-    public:
-      B(int n) : _n(n) {}
-      /*...*/
-    private:
-      int _n;
-    };
+class B() {
+public:
+  B(int n) : _n(n) {}
+  /*...*/
+private:
+  int _n;
+};
+```
 
 ### Callback Interface
 
 Any method with the signature `void(Signal&)` can be used as a callback for type 
 `Signal`:
 
-    class Handler {
+```c++
+class Handler {
 
-    public:
+public:
 
-      void onA(A& signal);
-      void onB(B& signal);
-    };
+  void onA(A& signal);
+  void onB(B& signal);
+};
+```
 
 ### Creating a `Sender`
 
 A sender is just a collection of signal `Slot`s:
 
-    chr::Slot<A>  a;
-    chr::Slot<A1> a1;
-    chr::Slot<B>  b;
+```c++
+chr::Slot<A>  a;
+chr::Slot<A1> a1;
+chr::Slot<B>  b;
 
-    chr::Sender sender;
-    sender.registerSlot(a);
-    sender.registerSlot(a1);
-    sender.registerSlot(b);
+chr::Sender sender;
+sender.registerSlot(a);
+sender.registerSlot(a1);
+sender.registerSlot(b);
+```
 
 ### Creating a `Receiver`
 
 Analogously, a receiver is a collection of callbacks:
 
-    Handler handler;
+```c++
+Handler handler;
 
-    chr::Receiver receiver;
-    receiver.registerCallback<A, Handler, &Handler::onA>(&handler);
-    receiver.registerCallback<B, Handler, &Handler::onB>(&handler);
+chr::Receiver receiver;
+receiver.registerCallback<A, Handler, &Handler::onA>(&handler);
+receiver.registerCallback<B, Handler, &Handler::onB>(&handler);
+```
 
 ### Connecting `Sender` to `Receiver`
 
@@ -83,6 +91,8 @@ Analogously, a receiver is a collection of callbacks:
 
 Signals are sent by invoking the `operator()` on the respective `Slot`s:
 
-    a();  // calls handler.onA() with signal A()
-    a1(); // calls handler.onA() with signal A1()
-    b(5); // calls handler.onB() with signal B(5)
+```c++
+a();  // calls handler.onA() with signal A()
+a1(); // calls handler.onA() with signal A1()
+b(5); // calls handler.onB() with signal B(5)
+```
