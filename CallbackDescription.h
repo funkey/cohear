@@ -23,7 +23,8 @@ public:
 			void*           obj) :
 		_signalTypeIndex(signalTypeIndex),
 		_functionTypeIndex(functionTypeIndex),
-		_obj(obj) {}
+		_obj(obj),
+		_precedence(0) {}
 
 	virtual ~CallbackDescription() {};
 
@@ -61,6 +62,20 @@ public:
 		return (_obj == other._obj && _functionTypeIndex == other._functionTypeIndex);
 	}
 
+	/**
+	 * Set the precedence of the callback. Callbacks of a Receiver will be 
+	 * checked in decreasing order of precedence for type compatibility with a 
+	 * Slot. Only the first compatible callback will be connected. Callbacks 
+	 * with the same precedence will be checked in the same order they have been 
+	 * added to the Receiver. The default precedence is 0.
+	 */
+	void setPrecedence(int precedence) {
+
+		_precedence = precedence;
+	}
+
+	int getPrecedence() const { return _precedence; }
+
 private:
 
 	// type of the signal accepted by the callback
@@ -71,6 +86,9 @@ private:
 
 	// object pointers for comparison
 	void* _obj;
+
+	// priority over other callbacks
+	int _precedence;
 };
 
 } // namespace chr

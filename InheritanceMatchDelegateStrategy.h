@@ -102,7 +102,7 @@ public:
 
 // template specialization for the no-parent case
 template <typename SignalType>
-class InheritanceMatchDelegateStrategy<SignalType, detail::NoParent> {
+class InheritanceMatchDelegateStrategy<SignalType, NoParent> {
 
 public:
 

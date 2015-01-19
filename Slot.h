@@ -19,7 +19,7 @@ public:
 		for (auto* cd : receiver.getCallbackDescriptions()) {
 
 			if (connected(cd))
-				continue;
+				break;
 
 			Delegate<SignalType> delegate;
 			bool foundMatch = GetDelegateStrategy::GetDelegate(*cd, delegate);

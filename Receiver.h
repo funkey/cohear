@@ -1,6 +1,7 @@
 #ifndef COHEAR_RECEIVER_H__
 #define COHEAR_RECEIVER_H__
 
+#include <algorithm>
 #include "CallbackDescription.h"
 #include "SignalCallbackDescription.h"
 #include "PassThroughCallbackDescription.h"
@@ -29,13 +30,15 @@ public:
 	template <typename SignalType, class T, void (T::*Method)(SignalType&)>
 	void registerCallback(T* obj) {
 
-		registerCallback(chr::SignalCallbackDescription<SignalType>::template Create<T, Method>(obj));
+		registerCallback(
+				new SignalCallbackDescription<SignalType, T, Method>(obj));
 	}
 
 	template <typename SignalType>
 	void registerPassThroughCallback(PassThroughSlot* targetSlot) {
 
-		registerCallback(new chr::PassThroughCallbackDescription<SignalType>(targetSlot));
+		registerCallback(
+				new PassThroughCallbackDescription<SignalType>(targetSlot));
 	}
 
 	/**
@@ -53,6 +56,13 @@ private:
 	void registerCallback(CallbackDescription* cd) {
 
 		_cds.push_back(cd);
+		std::stable_sort(
+				_cds.begin(),
+				_cds.end(),
+				[](CallbackDescription* a, CallbackDescription* b){
+						return a->getPrecedence() > b->getPrecedence();
+				}
+		);
 	}
 
 	std::vector<CallbackDescription*> _cds;

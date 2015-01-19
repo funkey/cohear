@@ -3,22 +3,22 @@
 
 #include "Delegate.h"
 #include "CallbackDescription.h"
+#include "detail/SignalTraits.h"
 
 namespace chr {
 
-template <typename SignalType>
+template <typename SignalType, class T, void (T::*Method)(SignalType&)>
 class SignalCallbackDescription : public CallbackDescription {
 
 public:
 
-	template <class T, void (T::*Method)(SignalType&)>
-	static SignalCallbackDescription<SignalType>* Create(T* obj) {
+	SignalCallbackDescription(
+			T* obj) :
+		CallbackDescription(typeid(SignalType), typeid(Method), obj),
+		_delegate(Delegate<SignalType>::template from_method<T, Method>(obj)) {
 
-		return new SignalCallbackDescription<SignalType>(
-				Delegate<SignalType>::template from_method<T, Method>(obj),
-				obj,
-				typeid(Method)
-		);
+		// the more specific a signal, the higher the precedence of the callback
+		setPrecedence(SignalTraits<SignalType>::specificity);
 	}
 
 	/**
@@ -28,13 +28,6 @@ public:
 	virtual void* getDelegate() override final { return &_delegate; }
 
 private:
-
-	SignalCallbackDescription(
-			Delegate<SignalType>&& delegate,
-			void* obj,
-			std::type_index functionTypeIndex) :
-		CallbackDescription(typeid(SignalType), functionTypeIndex, obj),
-		_delegate(delegate) {}
 
 	Delegate<SignalType> _delegate;
 };
