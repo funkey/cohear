@@ -5,6 +5,7 @@
 #include "CallbackDescription.h"
 #include "SignalCallbackDescription.h"
 #include "PassThroughCallbackDescription.h"
+#include "FilterCallbackDescription.h"
 
 namespace chr {
 
@@ -39,6 +40,13 @@ public:
 
 		registerCallback(
 				new PassThroughCallbackDescription<SignalType>(targetSlot));
+	}
+
+	template <typename SignalType>
+	void registerFilterCallback(FilterSlot* targetSlot) {
+
+		registerCallback(
+				new FilterCallbackDescription<SignalType>(targetSlot));
 	}
 
 	/**
