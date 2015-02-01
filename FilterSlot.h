@@ -2,20 +2,28 @@
 #define COHEAR_FILTER_SLOT_H__
 
 #include "detail/SlotBase.h"
+#include "detail/InternalFilterSlot.h"
 
 namespace chr {
 
+template <typename SignalType>
 class FilterSlot : public detail::SlotBase {
 
 public:
+
+	~FilterSlot() {
+
+		for (auto* slot : _internalSlots)
+			delete slot;
+	}
 
 	void connect(Receiver& receiver) override {
 
 		// remember we are connected to this receiver
 		_receivers.push_back(&receiver);
 
-		// connect all registered slots at the other side to the new receiver
-		for (SlotBase* slot : _slots)
+		// connect all internal slots to the new receiver
+		for (SlotBase* slot : _internalSlots)
 			slot->connect(receiver);
 	}
 
@@ -30,36 +38,55 @@ public:
 		_receivers.erase(i);
 
 		// disconnect all registered slots at the other side to the new receiver
-		for (SlotBase* slot : _slots)
+		for (SlotBase* slot : _internalSlots)
 			slot->disconnect(receiver);
 	}
 
+	bool isCompatible(CallbackDescription*) override {
+
+		// A FilterSlot itself is always compatible (but the original slots 
+		// might not be)
+		return true;
+	}
+
 	/**
-	 * To be called by FilterCallbackDescription, whenever a matching slot 
-	 * was connected.
+	 * To be called by FilterCallbackDescription, whenever a compatible slot was 
+	 * connected. Returns a delegate to the internal slot's filterAndForward 
+	 * method.
 	 */
-	void addSlot(SlotBase* slot) {
+	Delegate<SignalType>* registerOriginalSlot(
+			SlotBase*                  slot,
+			FilterDelegate<SignalType> filter,
+			FilterDelegate<SignalType> unfilter) {
+
+		// create a new internal slot for the original slot
+		detail::InternalFilterSlot<SignalType>* internalSlot = new detail::InternalFilterSlot<SignalType>(slot);
+		internalSlot->setFilterDelegates(filter, unfilter);
 
 		// remember the slot
-		_slots.push_back(slot);
+		_internalSlots.push_back(internalSlot);
 
 		// try to connect it to all currently connected receivers
 		for (Receiver* receiver : _receivers)
-			slot->connect(*receiver);
+			internalSlot->connect(*receiver);
+
+		return internalSlot->getOuterDelegate();
 	}
 
 	/**
 	 * To be called by FilterCallbackDescription, whenever a matching slot 
 	 * was connected.
 	 */
-	void removeSlot(SlotBase* slot) {
+	void unregisterOriginalSlot(SlotBase* slot) {
 
-		std::vector<SlotBase*>::iterator i = std::find(_slots.begin(), _slots.end(), slot);
-		if (i == _slots.end())
+		std::vector<SlotBase*>::iterator i = std::find(_internalSlots.begin(), _internalSlots.end(), slot);
+		if (i == _internalSlots.end())
 			return;
 
+		delete *i;
+
 		// forget about this slot
-		_slots.erase(i);
+		_internalSlots.erase(i);
 
 		// disconnect it from all currently connected receivers
 		for (Receiver* receiver : _receivers)
@@ -68,9 +95,8 @@ public:
 
 private:
 
-	// slots that are compatible with the FilterCallbackDescription on the 
-	// other side
-	std::vector<SlotBase*> _slots;
+	// internal filter slots that filter the signal and fire themselves
+	std::vector<SlotBase*> _internalSlots;
 
 	// receivers connected to this slot
 	std::vector<Receiver*> _receivers;

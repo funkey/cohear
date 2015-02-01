@@ -3,6 +3,7 @@
 
 #include "CallbackDescription.h"
 #include "FilterSlot.h"
+#include "FilterDelegate.h"
 
 namespace chr {
 
@@ -11,29 +12,36 @@ class FilterCallbackDescription : public CallbackDescription {
 
 public:
 
-	FilterCallbackDescription(FilterSlot* slot) :
+	FilterCallbackDescription(
+			FilterSlot<SignalType>* slot,
+			FilterDelegate<SignalType> filter,
+			FilterDelegate<SignalType> unfilter) :
 		CallbackDescription(
 				typeid(SignalType),
 				typeid(*this),
 				slot),
-		_slot(slot) {}
+		_slot(slot),
+		_filter(filter),
+		_unfilter(unfilter) {}
 
-	void* getDelegate() override { return 0; }
+	void* notifySlotConnect(detail::SlotBase* const slot) override final {
 
-	void notifySlotConnect(detail::SlotBase* const slot) {
-
-		_slot->addSlot(slot);
+		return _slot->registerOriginalSlot(slot, _filter, _unfilter);
 	}
 
-	void notifySlotDisconnect(detail::SlotBase* const slot) {
+	void notifySlotDisconnect(detail::SlotBase* const slot) override final {
 
-		_slot->removeSlot(slot);
+		_slot->unregisterOriginalSlot(slot);
 	}
 
 private:
 
 	// the slot to forward signals to
-	FilterSlot* _slot;
+	FilterSlot<SignalType>* _slot;
+
+	// the actual filter delegates
+	FilterDelegate<SignalType> _filter;
+	FilterDelegate<SignalType> _unfilter;
 };
 
 } // namespace chr
