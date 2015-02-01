@@ -34,6 +34,13 @@ public:
 			slot->disconnect(receiver);
 	}
 
+	bool isCompatible(CallbackDescription*) override {
+
+		// A PassThroughSlot itself is always compatible (but the original slots 
+		// might not be)
+		return true;
+	}
+
 	/**
 	 * To be called by PassThroughCallbackDescription, whenever a matching slot 
 	 * was connected.

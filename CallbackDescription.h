@@ -29,29 +29,23 @@ public:
 	virtual ~CallbackDescription() {};
 
 	/**
-	 * Get an untyped pointer to the delegate that invokes the callback. Used by 
-	 * get-delegate-strategies (which know what they do). Use at own risk.
-	 */
-	virtual void* getDelegate() = 0;
-
-	/**
 	 * Get the signal type index of the signal expected by the callback.
 	 */
 	std::type_index getSignalTypeIndex() { return _signalTypeIndex; }
 
 	/**
-	 * Called, whenever a matching slot is trying to connect to the delegate of 
-	 * this description (it will eventually connect, if the subsequent call to 
-	 * getDelegate() returns non-zero). To be overwritten by subclasses.
+	 * Called, whenever a compatible slot is trying to connect to this callback.  
+	 * The connection will be established, if a non-zero delegate is returned.  
+	 * To be overwritten by subclasses.
 	 */
-	virtual void notifySlotConnect(detail::SlotBase* const) {}
+	virtual void* notifySlotConnect(detail::SlotBase* const) = 0;
 
 	/**
-	 * Called, whenever a matching slot was trying to disconnect from the 
+	 * Called, whenever a compatible slot is trying to disconnect from the 
 	 * delegate of this description (even if it was not successfully connected 
 	 * before). To be overwritten by subclasses.
 	 */
-	virtual void notifySlotDisconnect(detail::SlotBase* const) {}
+	virtual void notifySlotDisconnect(detail::SlotBase* const) {};
 
 	/**
 	 * Compare two callback descriptors: Returns true, if both descriptors point 

@@ -18,14 +18,13 @@ public:
 				slot),
 		_slot(slot) {}
 
-	void* getDelegate() override { return 0; }
-
-	void notifySlotConnect(detail::SlotBase* const slot) {
+	void* notifySlotConnect(detail::SlotBase* const slot) override final {
 
 		_slot->addSlot(slot);
+		return 0;
 	}
 
-	void notifySlotDisconnect(detail::SlotBase* const slot) {
+	void notifySlotDisconnect(detail::SlotBase* const slot) override final {
 
 		_slot->removeSlot(slot);
 	}

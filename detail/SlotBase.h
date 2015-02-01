@@ -3,14 +3,17 @@
 
 namespace chr {
 
-// forward declaration
+// forward declarations
 class Receiver;
+class CallbackDescription;
 
 namespace detail {
 
 class SlotBase {
 
 public:
+
+	virtual ~SlotBase() {}
 
 	/**
 	 * Connect this slot to the callbacks of the given receiver.
@@ -21,6 +24,11 @@ public:
 	 * Disonnect this slot from the connected callbacks of the given receiver.
 	 */
 	virtual void disconnect(Receiver& receiver) = 0;
+
+	/**
+	 * Check, if this slot's signal is compatible to the callback's signal.
+	 */
+	virtual bool isCompatible(CallbackDescription* cd) = 0;
 };
 
 } // namespace detail

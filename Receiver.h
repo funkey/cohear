@@ -5,7 +5,6 @@
 #include "CallbackDescription.h"
 #include "SignalCallbackDescription.h"
 #include "PassThroughCallbackDescription.h"
-#include "FilterCallbackDescription.h"
 
 namespace chr {
 
@@ -42,19 +41,10 @@ public:
 				new PassThroughCallbackDescription<SignalType>(targetSlot));
 	}
 
-	template <typename SignalType>
-	void registerFilterCallback(FilterSlot* targetSlot) {
-
-		registerCallback(
-				new FilterCallbackDescription<SignalType>(targetSlot));
-	}
-
 	/**
 	 * Get descriptions of the callback offered by this receiver.
 	 */
 	const std::vector<CallbackDescription*>& getCallbackDescriptions() { return _cds; }
-
-private:
 
 	/**
 	 * Register a new callback via a callback description. Ownership of the 
@@ -72,6 +62,8 @@ private:
 				}
 		);
 	}
+
+private:
 
 	std::vector<CallbackDescription*> _cds;
 };

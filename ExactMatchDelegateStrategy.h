@@ -15,20 +15,20 @@ class ExactMatchDelegateStrategy {
 
 public:
 
-	static bool GetDelegate(CallbackDescription& cd, Delegate<SignalType>& delegate) {
+	/**
+	 * Returns true, if SignalType is compatible to the callback's signal type.
+	 */
+	static bool IsCompatible(CallbackDescription& cd) {
 
-		if (std::type_index(typeid(SignalType)) == cd.getSignalTypeIndex()) {
+		return (std::type_index(typeid(SignalType)) == cd.getSignalTypeIndex());
+	}
 
-			// we only update the delegate, if the callback description did have 
-			// a non-zero delegate pointer
-			if (cd.getDelegate())
-				delegate = *static_cast<Delegate<SignalType>*>(cd.getDelegate());
+	/**
+	 * Cast a delegate of a compatible callback to our expected delegate type.
+	 */
+	static Delegate<SignalType> CastDelegate(void* delegate) {
 
-			return true;
-		}
-
-		// no match
-		return false;
+		return *static_cast<Delegate<SignalType>*>(delegate);
 	}
 };
 

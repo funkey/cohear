@@ -21,19 +21,18 @@ public:
 			if (connected(cd))
 				break;
 
-			Delegate<SignalType> delegate;
-			bool foundMatch = GetDelegateStrategy::GetDelegate(*cd, delegate);
-
-			if (foundMatch) {
+			if (isCompatible(cd)) {
 
 				std::cout << "match found" << std::endl;
 
-				// notify the connection description about our connect attempt, 
-				// even if we didn't get a delegate
-				cd->notifySlotConnect(this);
+				// ask the connection description about a delegate we can 
+				// connect to
+				void* untypedDelegate = cd->notifySlotConnect(this);
 
-				if (delegate) {
+				// the callback offered us a delegate to connect to
+				if (untypedDelegate) {
 
+					Delegate<SignalType> delegate = GetDelegateStrategy::CastDelegate(untypedDelegate);
 					_delegates.push_back({delegate,cd});
 
 					// connect only to the first matching callback, this can be 
@@ -61,6 +60,11 @@ public:
 				}
 			}
 		}
+	}
+
+	virtual bool isCompatible(CallbackDescription* cd) override {
+
+		return GetDelegateStrategy::IsCompatible(*cd);
 	}
 
 	template <typename ... Args>

@@ -12,8 +12,7 @@ class SignalCallbackDescription : public CallbackDescription {
 
 public:
 
-	SignalCallbackDescription(
-			T* obj) :
+	SignalCallbackDescription(T* obj) :
 		CallbackDescription(typeid(SignalType), typeid(Method), obj),
 		_delegate(Delegate<SignalType>::template from_method<T, Method>(obj)) {
 
@@ -25,7 +24,7 @@ public:
 	 * Get an untyped pointer to the delegate that invokes the callback. Used by 
 	 * get-delegate-strategies (which know what they do). Use at own risk.
 	 */
-	virtual void* getDelegate() override final { return &_delegate; }
+	void* notifySlotConnect(detail::SlotBase* const) override final { return &_delegate; }
 
 private:
 
