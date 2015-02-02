@@ -23,8 +23,6 @@ public:
 
 			if (isCompatible(cd)) {
 
-				std::cout << "match found" << std::endl;
-
 				// ask the connection description about a delegate we can 
 				// connect to
 				void* untypedDelegate = cd->notifySlotConnect(this);
