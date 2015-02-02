@@ -11,6 +11,27 @@ class Receiver {
 
 public:
 
+	// allow only move construction and assignment, since we exclusively own the 
+	// callback descriptors
+	Receiver(const Receiver& other) = delete;
+	Receiver& operator=(const Receiver& other) = delete;
+
+	Receiver() {}
+
+	Receiver(Receiver&& other) :
+		_cds(other._cds) {
+
+		other._cds.clear();
+	}
+
+	Receiver& operator=(Receiver&& other) {
+
+		_cds = other._cds;
+		other._cds.clear();
+
+		return *this;
+	}
+
 	~Receiver() {
 
 		// we own the callback descriptions
