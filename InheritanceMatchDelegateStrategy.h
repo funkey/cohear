@@ -86,7 +86,7 @@ public:
 		// Derived and Base are compatible. All that seems to tell us that 
 		// we are fine.
 
-		return *reinterpret_cast<Delegate<SignalType>*>(delegate);
+		return *static_cast<Delegate<SignalType>*>(delegate);
 	}
 };
 
