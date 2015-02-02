@@ -51,7 +51,7 @@ public:
 			// even if we haven't been connected
 			cd->notifySlotDisconnect(this);
 
-			for (int i = 0; i < _delegates.size(); i++) {
+			for (std::size_t i = 0; i < _delegates.size(); i++) {
 
 				if (*_delegates[i].description == *cd) {
 

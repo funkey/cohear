@@ -101,7 +101,7 @@ public:
 		return false;
 	}
 
-	static Delegate<SignalType> CastDelegate(void* delegate) {
+	static Delegate<SignalType> CastDelegate(void*) {
 
 		return Delegate<SignalType>();
 	}
