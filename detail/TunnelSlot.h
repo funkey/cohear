@@ -1,11 +1,12 @@
-#ifndef COHEAR_PASS_THROUGH_SLOT_H__
-#define COHEAR_PASS_THROUGH_SLOT_H__
+#ifndef COHEAR_TUNNEL_SLOT_H__
+#define COHEAR_TUNNEL_SLOT_H__
 
-#include "detail/SlotBase.h"
+#include "SlotBase.h"
 
 namespace chr {
+namespace detail {
 
-class PassThroughSlot : public detail::SlotBase {
+class TunnelSlot : public detail::SlotBase {
 
 public:
 
@@ -36,13 +37,13 @@ public:
 
 	bool isCompatible(CallbackDescription*) override {
 
-		// A PassThroughSlot itself is always compatible (but the original slots 
+		// A TunnelSlot itself is always compatible (but the original slots 
 		// might not be)
 		return true;
 	}
 
 	/**
-	 * To be called by PassThroughCallbackDescription, whenever a matching slot 
+	 * To be called by TunnelCallbackDescription, whenever a matching slot 
 	 * was connected.
 	 */
 	void addSlot(SlotBase* slot) {
@@ -56,7 +57,7 @@ public:
 	}
 
 	/**
-	 * To be called by PassThroughCallbackDescription, whenever a matching slot 
+	 * To be called by TunnelCallbackDescription, whenever a matching slot 
 	 * was connected.
 	 */
 	void removeSlot(SlotBase* slot) {
@@ -75,7 +76,7 @@ public:
 
 private:
 
-	// slots that are compatible with the PassThroughCallbackDescription on the 
+	// slots that are compatible with the TunnelCallbackDescription on the 
 	// other side
 	std::vector<SlotBase*> _slots;
 
@@ -83,7 +84,8 @@ private:
 	std::vector<Receiver*> _receivers;
 };
 
+} // namespace detail
 } // namespace chr
 
-#endif // COHEAR_PASS_THROUGH_SLOT_H__
+#endif // COHEAR_TUNNEL_SLOT_H__
 

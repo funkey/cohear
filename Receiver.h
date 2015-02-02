@@ -4,12 +4,8 @@
 #include <algorithm>
 #include "CallbackDescription.h"
 #include "SignalCallbackDescription.h"
-#include "PassThroughCallbackDescription.h"
 
 namespace chr {
-
-// forward declaration
-class PassThroughSlot;
 
 class Receiver {
 
@@ -21,30 +17,6 @@ public:
 		for (CallbackDescription* cd : _cds)
 			delete cd;
 	}
-
-	/**
-	 * Register a method as a callback:
-	 *
-	 *   registerCallback<SignalType, Class, &Class::method>(&instance);
-	 */
-	template <typename SignalType, class T, void (T::*Method)(SignalType&)>
-	void registerCallback(T* obj) {
-
-		registerCallback(
-				new SignalCallbackDescription<SignalType, T, Method>(obj));
-	}
-
-	template <typename SignalType>
-	void registerPassThroughCallback(PassThroughSlot* targetSlot) {
-
-		registerCallback(
-				new PassThroughCallbackDescription<SignalType>(targetSlot));
-	}
-
-	/**
-	 * Get descriptions of the callback offered by this receiver.
-	 */
-	const std::vector<CallbackDescription*>& getCallbackDescriptions() { return _cds; }
 
 	/**
 	 * Register a new callback via a callback description. Ownership of the 
@@ -62,6 +34,26 @@ public:
 				}
 		);
 	}
+
+	/**
+	 * Register a method as a callback. Usage:
+	 *
+	 *   registerCallback<SignalType, Class, &Class::method>(&instance);
+	 *
+	 * This is a convenience wrapper for creating and registering a 
+	 * SignalCallbackDescription.
+	 */
+	template <typename SignalType, class T, void (T::*Method)(SignalType&)>
+	void registerCallback(T* obj) {
+
+		registerCallback(
+				new SignalCallbackDescription<SignalType, T, Method>(obj));
+	}
+
+	/**
+	 * Get descriptions of the callback offered by this receiver.
+	 */
+	const std::vector<CallbackDescription*>& getCallbackDescriptions() { return _cds; }
 
 private:
 

@@ -1,15 +1,22 @@
 #ifndef COHEAR_FILTER_SLOT_H__
 #define COHEAR_FILTER_SLOT_H__
 
-#include "detail/SlotBase.h"
-#include "detail/InternalFilterSlot.h"
+#include "SlotBase.h"
+#include "InternalFilterSlot.h"
 
 namespace chr {
+namespace detail {
 
 template <typename SignalType>
 class FilterSlot : public detail::SlotBase {
 
 public:
+
+	FilterSlot(
+			FilterDelegate<SignalType> filter,
+			FilterDelegate<SignalType> unfilter) :
+		_filter(filter),
+		_unfilter(unfilter) {}
 
 	~FilterSlot() {
 
@@ -54,14 +61,11 @@ public:
 	 * connected. Returns a delegate to the internal slot's filterAndForward 
 	 * method.
 	 */
-	Delegate<SignalType>* registerOriginalSlot(
-			SlotBase*                  slot,
-			FilterDelegate<SignalType> filter,
-			FilterDelegate<SignalType> unfilter) {
+	Delegate<SignalType>* registerOriginalSlot(SlotBase* slot) {
 
 		// create a new internal slot for the original slot
 		detail::InternalFilterSlot<SignalType>* internalSlot = new detail::InternalFilterSlot<SignalType>(slot);
-		internalSlot->setFilterDelegates(filter, unfilter);
+		internalSlot->setFilterDelegates(_filter, _unfilter);
 
 		// remember the slot
 		_internalSlots.push_back(internalSlot);
@@ -100,8 +104,13 @@ private:
 
 	// receivers connected to this slot
 	std::vector<Receiver*> _receivers;
+
+	// the actual filter delegates
+	FilterDelegate<SignalType> _filter;
+	FilterDelegate<SignalType> _unfilter;
 };
 
+} // namespace detail
 } // namespace chr
 
 #endif // COHEAR_FILTER_SLOT_H__

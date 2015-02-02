@@ -1,32 +1,28 @@
 #ifndef COHEAR_FILTER_CALLBACK_DESCRIPTION_H__
 #define COHEAR_FILTER_CALLBACK_DESCRIPTION_H__
 
-#include "CallbackDescription.h"
+#include <cohear/CallbackDescription.h>
+#include <cohear/FilterDelegate.h>
 #include "FilterSlot.h"
-#include "FilterDelegate.h"
 
 namespace chr {
+namespace detail {
 
 template <typename SignalType>
 class FilterCallbackDescription : public CallbackDescription {
 
 public:
 
-	FilterCallbackDescription(
-			FilterSlot<SignalType>* slot,
-			FilterDelegate<SignalType> filter,
-			FilterDelegate<SignalType> unfilter) :
+	FilterCallbackDescription(FilterSlot<SignalType>* slot) :
 		CallbackDescription(
 				typeid(SignalType),
 				typeid(*this),
 				slot),
-		_slot(slot),
-		_filter(filter),
-		_unfilter(unfilter) {}
+		_slot(slot) {}
 
 	void* notifySlotConnect(detail::SlotBase* const slot) override final {
 
-		return _slot->registerOriginalSlot(slot, _filter, _unfilter);
+		return _slot->registerOriginalSlot(slot);
 	}
 
 	void notifySlotDisconnect(detail::SlotBase* const slot) override final {
@@ -38,12 +34,9 @@ private:
 
 	// the slot to forward signals to
 	FilterSlot<SignalType>* _slot;
-
-	// the actual filter delegates
-	FilterDelegate<SignalType> _filter;
-	FilterDelegate<SignalType> _unfilter;
 };
 
+} // namespace detail
 } // namespace chr
 
 #endif // COHEAR_FILTER_CALLBACK_DESCRIPTION_H__

@@ -1,17 +1,18 @@
-#ifndef COHEAR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
-#define COHEAR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
+#ifndef COHEAR_TUNNEL_CALLBACK_DESCRIPTION_H__
+#define COHEAR_TUNNEL_CALLBACK_DESCRIPTION_H__
 
-#include "CallbackDescription.h"
-#include "PassThroughSlot.h"
+#include <cohear/CallbackDescription.h>
+#include "TunnelSlot.h"
 
 namespace chr {
+namespace detail {
 
 template <typename SignalType>
-class PassThroughCallbackDescription : public CallbackDescription {
+class TunnelCallbackDescription : public CallbackDescription {
 
 public:
 
-	PassThroughCallbackDescription(PassThroughSlot* slot) :
+	TunnelCallbackDescription(TunnelSlot* slot) :
 		CallbackDescription(
 				typeid(SignalType),
 				typeid(*this),
@@ -32,10 +33,11 @@ public:
 private:
 
 	// the slot to forward signals to
-	PassThroughSlot* _slot;
+	TunnelSlot* _slot;
 };
 
+} // namespace detail
 } // namespace chr
 
-#endif // COHEAR_PASS_THROUGH_CALLBACK_DESCRIPTION_H__
+#endif // COHEAR_TUNNEL_CALLBACK_DESCRIPTION_H__
 
