@@ -4,6 +4,7 @@
 #include "Delegate.h"
 #include "CallbackDescription.h"
 #include "detail/SignalTraits.h"
+#include "ExactMatchDelegateStrategy.h"
 
 namespace chr {
 

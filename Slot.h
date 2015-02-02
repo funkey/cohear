@@ -3,13 +3,13 @@
 
 #include <map>
 #include "detail/SlotBase.h"
-#include "ExactMatchDelegateStrategy.h"
+#include "InheritanceMatchDelegateStrategy.h"
 
 namespace chr {
 
 template <
 		typename SignalType,
-		typename GetDelegateStrategy = ExactMatchDelegateStrategy<SignalType>>
+		typename GetDelegateStrategy = InheritanceMatchDelegateStrategy<SignalType>>
 class Slot : public detail::SlotBase {
 
 public:
