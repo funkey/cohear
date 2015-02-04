@@ -14,7 +14,7 @@ public:
 
 	FilterSlot(
 			FilterDelegate<SignalType> filter,
-			FilterDelegate<SignalType> unfilter) :
+			Delegate<SignalType> unfilter) :
 		_filter(filter),
 		_unfilter(unfilter) {}
 
@@ -107,7 +107,7 @@ private:
 
 	// the actual filter delegates
 	FilterDelegate<SignalType> _filter;
-	FilterDelegate<SignalType> _unfilter;
+	Delegate<SignalType> _unfilter;
 };
 
 } // namespace detail

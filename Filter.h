@@ -2,6 +2,7 @@
 #define COHEAR_FILTER_H__
 
 #include "FilterDelegate.h"
+#include "Delegate.h"
 #include "detail/FilterCallbackDescription.h"
 #include "detail/FilterSlot.h"
 
@@ -31,7 +32,7 @@ public:
 
 	Filter(
 			FilterDelegate<SignalType> filter,
-			FilterDelegate<SignalType> unfilter) :
+			Delegate<SignalType> unfilter) :
 		_slot(filter, unfilter) {}
 
 	/**

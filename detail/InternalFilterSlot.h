@@ -1,9 +1,9 @@
 #ifndef COHEAR_DETAIL_INTERNAL_FILTER_SLOT_H__
 #define COHEAR_DETAIL_INTERNAL_FILTER_SLOT_H__
 
+#include <cohear/FilterDelegate.h>
 #include <cohear/Delegate.h>
 #include <cohear/Slot.h>
-#include <cohear/FilterDelegate.h>
 
 namespace chr {
 namespace detail {
@@ -25,7 +25,7 @@ public:
 	 */
 	void setFilterDelegates(
 			FilterDelegate<SignalType> filter,
-			FilterDelegate<SignalType> unfilter) {
+			Delegate<SignalType> unfilter) {
 
 		_filter   = filter;
 		_unfilter = unfilter;
@@ -60,7 +60,7 @@ public:
 private:
 
 	FilterDelegate<SignalType> _filter;
-	FilterDelegate<SignalType> _unfilter;
+	Delegate<SignalType> _unfilter;
 
 	// the original slot this internal filter slot was created for
 	SlotBase* _originalSlot;
