@@ -17,7 +17,11 @@ public:
 				typeid(SignalType),
 				typeid(*this),
 				slot),
-		_slot(slot) {}
+		_slot(slot) {
+
+		// the more specific a signal, the higher the precedence of the callback
+		setPrecedence(SignalTraits<SignalType>::specificity);
+	}
 
 	void* notifySlotConnect(detail::SlotBase* const slot) override final {
 
