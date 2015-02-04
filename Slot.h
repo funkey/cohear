@@ -1,7 +1,7 @@
 #ifndef COHEAR_SLOT_H__
 #define COHEAR_SLOT_H__
 
-#include <map>
+#include <set>
 #include "detail/SlotBase.h"
 #include "InheritanceMatchDelegateStrategy.h"
 
@@ -13,6 +13,9 @@ template <
 class Slot : public detail::SlotBase {
 
 public:
+
+	Slot() :
+		_delegatesNeedUpdate(false) {}
 
 	void connect(Receiver& receiver) override final {
 
@@ -31,7 +34,8 @@ public:
 				if (untypedDelegate) {
 
 					Delegate<SignalType> delegate = GetDelegateStrategy::CastDelegate(untypedDelegate);
-					_delegates.push_back({delegate,cd});
+					_stagedDelegates.insert({delegate,cd});
+					_delegatesNeedUpdate = true;
 
 					// connect only to the first matching callback, this can be 
 					// generalized by a strategy
@@ -49,11 +53,21 @@ public:
 			// even if we haven't been connected
 			cd->notifySlotDisconnect(this);
 
-			for (std::size_t i = 0; i < _delegates.size(); i++) {
+			for (typename dds_list_type::iterator i = _delegates.begin(); i != _delegates.end(); ++i) {
 
-				if (*_delegates[i].description == *cd) {
+				if (*i->description == *cd) {
 
-					_delegates.erase(_delegates.begin() + i);
+					_staleDelegates.insert(*i);
+					_delegatesNeedUpdate = true;
+					break;
+				}
+			}
+
+			for (typename dds_set_type::iterator i = _stagedDelegates.begin(); i != _stagedDelegates.end(); ++i) {
+
+				if (*i->description == *cd) {
+
+					_stagedDelegates.erase(i);
 					break;
 				}
 			}
@@ -70,11 +84,18 @@ public:
 
 		SignalType signal(args...);
 
-		for (auto& dd : _delegates)
-			dd.delegate(signal);
+		operator()(signal);
 	}
 
 	inline void operator()(SignalType& signal) {
+
+		if (_delegatesNeedUpdate) {
+
+			addStagedDelegates();
+			removeStaleDelegates();
+
+			_delegatesNeedUpdate = false;
+		}
 
 		for (auto& dd : _delegates)
 			dd.delegate(signal);
@@ -86,18 +107,73 @@ private:
 
 		Delegate<SignalType> delegate;
 		CallbackDescription* description;
+
+		bool operator==(const DescribedDelegate& other) const {
+
+			return *description == *other.description;
+		}
+
+		bool operator<(const DescribedDelegate& other) const {
+
+			if (*this == other)
+				return false;
+			else
+				return description < other.description;
+		}
 	};
+
+	typedef std::vector<DescribedDelegate> dds_list_type;
+	typedef std::set<DescribedDelegate>    dds_set_type;
 
 	bool connected(CallbackDescription* cd) {
 
+		// already connected, but marked for removal?
+		for (auto& dd : _staleDelegates)
+			if (*dd.description == *cd)
+				return false;
+
+		// already connected?
 		for (auto& dd : _delegates)
+			if (*dd.description == *cd)
+				return true;
+
+		// already connected, not yet added?
+		for (auto& dd : _stagedDelegates)
 			if (*dd.description == *cd)
 				return true;
 
 		return false;
 	}
 
-	std::vector<DescribedDelegate> _delegates;
+	void addStagedDelegates() {
+
+		std::copy(_stagedDelegates.begin(), _stagedDelegates.end(), std::back_inserter(_delegates));
+		_stagedDelegates.clear();
+	}
+
+	void removeStaleDelegates() {
+
+		for (typename dds_set_type::iterator i = _staleDelegates.begin(); i != _staleDelegates.end(); ++i)
+			for (typename dds_list_type::iterator j = _delegates.begin(); j != _delegates.end(); ++j)
+				if (*i == *j) {
+
+					_delegates.erase(j);
+					break;
+				}
+		_staleDelegates.clear();
+	}
+
+	// currently connected delegates
+	dds_list_type _delegates;
+
+	// newly connected delegates, not yet added to _delegates
+	dds_set_type  _stagedDelegates;
+
+	// disconnected delegates, not yet removed from _delegates
+	dds_set_type  _staleDelegates;
+
+	// indicate that there are stale or staged delegates
+	bool _delegatesNeedUpdate;
 };
 
 } // namespace chr
