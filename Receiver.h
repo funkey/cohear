@@ -1,6 +1,7 @@
 #ifndef COHEAR_RECEIVER_H__
 #define COHEAR_RECEIVER_H__
 
+#include <map>
 #include <algorithm>
 #include "CallbackDescription.h"
 #include "SignalCallbackDescription.h"
