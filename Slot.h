@@ -19,59 +19,16 @@ public:
 
 	void connect(Receiver& receiver) override final {
 
-		for (auto* cd : receiver.getCallbackDescriptions()) {
-
-			if (connected(cd))
-				break;
-
-			if (isCompatible(cd)) {
-
-				// ask the connection description about a delegate we can 
-				// connect to
-				void* untypedDelegate = cd->notifySlotConnect(this);
-
-				// the callback offered us a delegate to connect to
-				if (untypedDelegate) {
-
-					Delegate<SignalType> delegate = GetDelegateStrategy::CastDelegate(untypedDelegate);
-					_stagedDelegates.insert({delegate,cd});
-					_delegatesNeedUpdate = true;
-
-					// connect only to the first matching callback, this can be 
-					// generalized by a strategy
-					break;
-				}
-			}
-		}
+		// connect to each callback group of the receiver
+		for (const Receiver::groups_type::value_type& groupCds : receiver.getCallbackDescriptions())
+			connect(groupCds.second);
 	}
 
 	void disconnect(Receiver& receiver) override final {
 
-		for (auto* cd : receiver.getCallbackDescriptions()) {
-
-			// notify the connection description about our disconnect attempt, 
-			// even if we haven't been connected
-			cd->notifySlotDisconnect(this);
-
-			for (typename dds_list_type::iterator i = _delegates.begin(); i != _delegates.end(); ++i) {
-
-				if (*i->description == *cd) {
-
-					_staleDelegates.insert(*i);
-					_delegatesNeedUpdate = true;
-					break;
-				}
-			}
-
-			for (typename dds_set_type::iterator i = _stagedDelegates.begin(); i != _stagedDelegates.end(); ++i) {
-
-				if (*i->description == *cd) {
-
-					_stagedDelegates.erase(i);
-					break;
-				}
-			}
-		}
+		// disconnect from each callback group of the receiver
+		for (const Receiver::groups_type::value_type& groupCds : receiver.getCallbackDescriptions())
+			disconnect(groupCds.second);
 	}
 
 	virtual bool isCompatible(CallbackDescription* cd) override {
@@ -124,6 +81,62 @@ private:
 
 	typedef std::vector<DescribedDelegate> dds_list_type;
 	typedef std::set<DescribedDelegate>    dds_set_type;
+
+	void connect(const std::vector<CallbackDescription*>& cds) {
+
+		for (auto* cd : cds) {
+
+			if (connected(cd))
+				break;
+
+			if (isCompatible(cd)) {
+
+				// ask the connection description about a delegate we can 
+				// connect to
+				void* untypedDelegate = cd->notifySlotConnect(this);
+
+				// the callback offered us a delegate to connect to
+				if (untypedDelegate) {
+
+					Delegate<SignalType> delegate = GetDelegateStrategy::CastDelegate(untypedDelegate);
+					_stagedDelegates.insert({delegate,cd});
+					_delegatesNeedUpdate = true;
+
+					// connect only to the first matching callback in each group
+					break;
+				}
+			}
+		}
+	}
+
+	void disconnect(const std::vector<CallbackDescription*>& cds) {
+
+		for (auto* cd : cds) {
+
+			// notify the connection description about our disconnect attempt, 
+			// even if we haven't been connected
+			cd->notifySlotDisconnect(this);
+
+			for (typename dds_list_type::iterator i = _delegates.begin(); i != _delegates.end(); ++i) {
+
+				if (*i->description == *cd) {
+
+					_staleDelegates.insert(*i);
+					_delegatesNeedUpdate = true;
+					break;
+				}
+			}
+
+			for (typename dds_set_type::iterator i = _stagedDelegates.begin(); i != _stagedDelegates.end(); ++i) {
+
+				if (*i->description == *cd) {
+
+					_stagedDelegates.erase(i);
+					break;
+				}
+			}
+		}
+	}
 
 	bool connected(CallbackDescription* cd) {
 

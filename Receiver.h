@@ -11,6 +11,9 @@ class Receiver {
 
 public:
 
+	typedef std::vector<CallbackDescription*> cds_type;
+	typedef std::map<int, cds_type>           groups_type;
+
 	// allow only move construction and assignment, since we exclusively own the 
 	// callback descriptors
 	Receiver(const Receiver& other) = delete;
@@ -19,15 +22,15 @@ public:
 	Receiver() {}
 
 	Receiver(Receiver&& other) :
-		_cds(other._cds) {
+		_callbackGroups(other._callbackGroups) {
 
-		other._cds.clear();
+		other._callbackGroups.clear();
 	}
 
 	Receiver& operator=(Receiver&& other) {
 
-		_cds = other._cds;
-		other._cds.clear();
+		_callbackGroups = other._callbackGroups;
+		other._callbackGroups.clear();
 
 		return *this;
 	}
@@ -35,8 +38,9 @@ public:
 	~Receiver() {
 
 		// we own the callback descriptions
-		for (CallbackDescription* cd : _cds)
-			delete cd;
+		for (groups_type::value_type& groupCds : _callbackGroups)
+			for (CallbackDescription* cd : groupCds.second)
+				delete cd;
 	}
 
 	/**
@@ -44,12 +48,12 @@ public:
 	 * description is transfered to the receiver (the description will be freed 
 	 * on desctruction of the receiver).
 	 */
-	void registerCallback(CallbackDescription* cd) {
+	void registerCallback(CallbackDescription* cd, int group = 0) {
 
-		_cds.push_back(cd);
+		_callbackGroups[group].push_back(cd);
 		std::stable_sort(
-				_cds.begin(),
-				_cds.end(),
+				_callbackGroups[group].begin(),
+				_callbackGroups[group].end(),
 				[](CallbackDescription* a, CallbackDescription* b){
 						return a->getPrecedence() > b->getPrecedence();
 				}
@@ -65,20 +69,21 @@ public:
 	 * SignalCallbackDescription.
 	 */
 	template <typename SignalType, class T, void (T::*Method)(SignalType&)>
-	void registerCallback(T* obj) {
+	void registerCallback(T* obj, int group = 0) {
 
 		registerCallback(
-				new SignalCallbackDescription<SignalType, T, Method>(obj));
+				new SignalCallbackDescription<SignalType, T, Method>(obj),
+				group);
 	}
 
 	/**
 	 * Get descriptions of the callback offered by this receiver.
 	 */
-	const std::vector<CallbackDescription*>& getCallbackDescriptions() { return _cds; }
+	const groups_type& getCallbackDescriptions() { return _callbackGroups; }
 
 private:
 
-	std::vector<CallbackDescription*> _cds;
+	groups_type _callbackGroups;
 };
 
 } // namespace chr
