@@ -2,6 +2,7 @@
 #define COHEAR_SLOT_H__
 
 #include <set>
+#include "Receiver.h"
 #include "detail/SlotBase.h"
 #include "InheritanceMatchDelegateStrategy.h"
 
