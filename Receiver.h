@@ -3,6 +3,7 @@
 
 #include <map>
 #include <algorithm>
+#include <vector>
 #include "CallbackDescription.h"
 #include "SignalCallbackDescription.h"
 
