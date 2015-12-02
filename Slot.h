@@ -101,7 +101,7 @@ private:
 				if (untypedDelegate) {
 
 					Delegate<SignalType> delegate = GetDelegateStrategy::CastDelegate(untypedDelegate);
-					_stagedDelegates.insert({delegate,cd});
+					_stagedDelegates.push_back({delegate,cd});
 					_delegatesNeedUpdate = true;
 
 					// connect only to the first matching callback in each group
@@ -129,7 +129,7 @@ private:
 				}
 			}
 
-			for (typename dds_set_type::iterator i = _stagedDelegates.begin(); i != _stagedDelegates.end(); ++i) {
+			for (typename dds_list_type::iterator i = _stagedDelegates.begin(); i != _stagedDelegates.end(); ++i) {
 
 				if (*i->description == *cd) {
 
@@ -182,7 +182,7 @@ private:
 	dds_list_type _delegates;
 
 	// newly connected delegates, not yet added to _delegates
-	dds_set_type  _stagedDelegates;
+	dds_list_type  _stagedDelegates;
 
 	// disconnected delegates, not yet removed from _delegates
 	dds_set_type  _staleDelegates;
