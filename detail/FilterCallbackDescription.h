@@ -16,7 +16,7 @@ public:
 	FilterCallbackDescription(FilterSlot<SignalType>* slot) :
 		CallbackDescription(
 				typeid(SignalType),
-				typeid(*this),
+				typeid(FilterCallbackDescription),
 				slot),
 		_slot(slot) {
 

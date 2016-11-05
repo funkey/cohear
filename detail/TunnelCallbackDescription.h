@@ -15,10 +15,9 @@ public:
 	TunnelCallbackDescription(TunnelSlot* slot) :
 		CallbackDescription(
 				typeid(SignalType),
-				typeid(*this),
+				typeid(TunnelCallbackDescription),
 				slot),
 		_slot(slot) {
-
 		// the more specific a signal, the higher the precedence of the callback
 		setPrecedence(SignalTraits<SignalType>::specificity);
 	}

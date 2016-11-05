@@ -3,6 +3,7 @@
 
 #include <set>
 #include <vector>
+#include <iterator>
 #include "Receiver.h"
 #include "detail/SlotBase.h"
 #include "InheritanceMatchDelegateStrategy.h"
